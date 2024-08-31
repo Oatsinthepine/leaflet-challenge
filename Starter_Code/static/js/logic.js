@@ -13,12 +13,11 @@ baseMap.addTo(myMap);
 
 let link = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson';
 
-// Function to calculate the marker size based on magnitude
+// Function to calculate the marker size based on its magnitude
 function makeMarkerSize(magnitude) {
     return magnitude * 50000; // Adjust this multiplier as needed
 }
 
-// Function to determine the color based on depth
 // Function to determine the color based on depth
 function changeColor(depth) {
     if (depth >= 90) {
@@ -56,15 +55,17 @@ d3.json(link).then(function (data) {
             color: "black",
             fillColor: changeColor(depth),
             radius: makeMarkerSize(features[i].properties.mag)
+        // here use .bindPopup to provide additional information when user clicked the marker.
         }).bindPopup(`<h3>${features[i].properties.title}</h3><hr><p>Depth: ${depth}</p>`).addTo(myMap);
     }
 
     // Create a legend control and add it to the map
     let legend = L.control({ position: 'bottomright' });
 
+    // add the legend to the baseMap
     legend.onAdd = function () {
         let div = L.DomUtil.create('div', 'info legend');
-        let depths = [-10, 10, 30, 50, 70, 90]; // Depth intervals
+        let depths = [-10, 10, 30, 50, 70, 90]; // Depth intervals for presenting.
 
         // Loop through the intervals and generate a label with a colored square for each interval
         for (let i = 0; i < depths.length; i++) {
@@ -80,5 +81,5 @@ d3.json(link).then(function (data) {
     legend.addTo(myMap);
 
 }).catch(function (error) {
-    console.error('Error loading the GeoJSON data:', error); // perform error handelling.
+    console.error('Error loading the GeoJSON data:', error); // perform error handelling if unable to fetch and process json data.
 });
