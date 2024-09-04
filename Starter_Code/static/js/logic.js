@@ -37,6 +37,9 @@ function changeColor(depth) {
 
 // Load the GeoJSON data using d3.json()
 d3.json(link).then(function (data) {
+    // logging the fetched datd in the console to inspect.
+    console.log(data);
+
     // Access the features array from the GeoJSON data
     let features = data.features;
 
